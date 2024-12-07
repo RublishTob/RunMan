@@ -35,7 +35,7 @@ public class ChangeImage : MonoBehaviour
         {
             Debug.Log("NOTHING TO PICTURE");
         }
-        Rect rect = new Rect(0, 0, 960, 720);
+        Rect rect = new Rect(0, 0, 640, 480);
         Sprite sprite = Sprite.Create(image, rect, Vector2.zero);
         _material.sprite = sprite;
         gameObject.SetActive(true);

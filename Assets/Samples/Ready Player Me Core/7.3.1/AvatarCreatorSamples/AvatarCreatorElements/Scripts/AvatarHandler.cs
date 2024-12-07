@@ -24,7 +24,7 @@ namespace ReadyPlayerMe.Samples.AvatarCreatorElements
 
         private void Awake()
         {
-            avatarManager = new AvatarManager(token: cancellationTokenSource.Token);
+           avatarManager = new AvatarManager(token: cancellationTokenSource.Token);
         }
 
         public async Task LoadAvatar(string avatarId)
