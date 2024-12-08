@@ -20,7 +20,9 @@ public class AvatarFromPhoto : MonoBehaviour
 
     private void Awake()
     {
+        PlayerPrefs.DeleteAll();
         _avatarManager = new AvatarManager(token: cancellationTokenSource.Token);
+
     }
     void OnEnable()
     {
