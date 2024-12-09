@@ -56,6 +56,8 @@ namespace ReadyPlayerMe.Samples.AvatarCreatorElements
             await TaskExtensions.HandleCancellation(string.IsNullOrEmpty(session.LastModifiedAvatarId) ? CreateTemplateAvatar() : LoadAvatarWithId(session.LastModifiedAvatarId));
         }
 
+
+
         private async Task<AvatarProperties> LoadAvatarWithId(string avatarId)
         {
             OnAvatarLoading?.Invoke();
@@ -73,6 +75,41 @@ namespace ReadyPlayerMe.Samples.AvatarCreatorElements
         ///     Creates an avatar from a template and sets its initial properties.
         /// </summary>
         /// <returns>The properties of the created avatar.</returns>
+        /// 
+
+        public async void LoadAvatarFromSelfie(Texture2D photo)
+        {
+            if (photo == null)
+            {
+                Debug.Log("NO PHOTO");
+                return;
+            }
+            var startTime = Time.time;
+
+            GameObject avatar;
+
+            var avatarProps = new AvatarProperties();
+            avatarProps.Id = "67529f7c9ae073e982e0934c";
+            avatarProps.Partner = "runtemp";
+            avatarProps.BodyType = BodyType.FullBody;
+            avatarProps.Base64Image = Texture2DToBase64(photo);
+            avatarProps.Assets = new();
+
+            var avatarResponse = await avatarManager.CreateAvatarAsync(avatarProps);
+            avatar = avatarResponse.AvatarObject;
+
+            if (avatar == null)
+            {
+                Debug.Log("CANT LOAD AVATAR");
+            }
+            SetupLoadedAvatar(avatar, avatarResponse.Properties);
+        }
+        public string Texture2DToBase64(Texture2D texture)
+        {
+            byte[] imageData = texture.EncodeToPNG();
+            return Convert.ToBase64String(imageData);
+        }
+
         private async Task<AvatarProperties> CreateTemplateAvatar()
         {
             OnAvatarLoading?.Invoke();
@@ -121,6 +158,7 @@ namespace ReadyPlayerMe.Samples.AvatarCreatorElements
 
         private void OnDestroy()
         {
+            DontDestroyOnLoad(avatar);
             cancellationTokenSource.Cancel();
             cancellationTokenSource.Dispose();
         }
