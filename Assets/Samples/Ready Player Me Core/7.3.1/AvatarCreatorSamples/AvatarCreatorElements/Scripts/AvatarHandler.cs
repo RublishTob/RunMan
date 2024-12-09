@@ -77,12 +77,12 @@ namespace ReadyPlayerMe.Samples.AvatarCreatorElements
         /// <returns>The properties of the created avatar.</returns>
         /// 
 
-        public async void LoadAvatarFromSelfie(Texture2D photo)
+        public async Task <GameObject> LoadAvatarFromSelfie(Texture2D photo)
         {
             if (photo == null)
             {
                 Debug.Log("NO PHOTO");
-                return;
+                return null;
             }
             var startTime = Time.time;
 
@@ -103,6 +103,8 @@ namespace ReadyPlayerMe.Samples.AvatarCreatorElements
                 Debug.Log("CANT LOAD AVATAR");
             }
             SetupLoadedAvatar(avatar, avatarResponse.Properties);
+
+            return avatar;
         }
         public string Texture2DToBase64(Texture2D texture)
         {
@@ -141,6 +143,7 @@ namespace ReadyPlayerMe.Samples.AvatarCreatorElements
 
             SetupAvatar(newAvatarProperties);
             OnAvatarLoaded?.Invoke(newAvatarProperties);
+
         }
 
         /// <summary>
@@ -158,7 +161,6 @@ namespace ReadyPlayerMe.Samples.AvatarCreatorElements
 
         private void OnDestroy()
         {
-            DontDestroyOnLoad(avatar);
             cancellationTokenSource.Cancel();
             cancellationTokenSource.Dispose();
         }

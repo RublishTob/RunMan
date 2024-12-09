@@ -296,6 +296,7 @@ MonoBehaviour:
   _photoCaptureElement: {fileID: 1749092594}
   _avatarHandler: {fileID: 1442581554}
   _buttonConfirm: {fileID: 53646860}
+  _avatar: {fileID: 0}
 --- !u!4 &43096111
 Transform:
   m_ObjectHideFlags: 0
@@ -5468,6 +5469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc9784a15b9e329469e2a6537e5977be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Scene: 2
 --- !u!4 &918762535
 Transform:
   m_ObjectHideFlags: 0

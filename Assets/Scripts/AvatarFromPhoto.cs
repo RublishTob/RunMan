@@ -16,7 +16,7 @@ public class AvatarFromPhoto : MonoBehaviour
 
     private Texture2D _photo;
 
-    private GameObject _avatar;
+    [SerializeField] private GameObject _avatar;
 
     private readonly CancellationTokenSource cancellationTokenSource = new();
 
@@ -42,9 +42,10 @@ public class AvatarFromPhoto : MonoBehaviour
     {
         _photo = photo;
     }
-    private void LoadAvatar()
+    private async void LoadAvatar()
     {
-        _avatarHandler.LoadAvatarFromSelfie(_photo);
+        _avatar = await _avatarHandler.LoadAvatarFromSelfie(_photo);
+        AssetProvider.Instance.SetPlayer(_avatar);
     }
     public string Texture2DToBase64(Texture2D texture)
     {
