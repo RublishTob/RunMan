@@ -23,10 +23,10 @@ public class Bootstrap : MonoBehaviour
 
     private void Awake()
     {
-            ServiceLocator.Instance.RegisterService(_gameStateMachine);
-            ServiceLocator.Instance.RegisterService(_sceneLoader);
+            //ServiceLocator.Instance.RegisterService(_gameStateMachine);
+            //ServiceLocator.Instance.RegisterService(_sceneLoader);
 
-            InitializeService();
+            //InitializeService();
     }
     private void InitializeService()
     {

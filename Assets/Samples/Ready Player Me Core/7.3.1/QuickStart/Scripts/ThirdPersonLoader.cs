@@ -23,9 +23,9 @@ namespace ReadyPlayerMe.Samples.QuickStart
         
         private void Start()
         {
-            avatarObjectLoader = new AvatarObjectLoader();
-            avatarObjectLoader.OnCompleted += OnLoadCompleted;
-            avatarObjectLoader.OnFailed += OnLoadFailed;
+            //avatarObjectLoader = new AvatarObjectLoader();
+            //avatarObjectLoader.OnCompleted += OnLoadCompleted;
+            //avatarObjectLoader.OnFailed += OnLoadFailed;
             
             if (previewAvatar != null)
             {
@@ -53,6 +53,17 @@ namespace ReadyPlayerMe.Samples.QuickStart
             OnLoadComplete?.Invoke();
         }
 
+        public void SetPlayer(GameObject player)
+        {
+            if (previewAvatar != null)
+            {
+                Destroy(previewAvatar);
+                previewAvatar = null;
+            }
+            SetupAvatar(player);
+            //OnLoadComplete?.Invoke();
+        }
+
         private void SetupAvatar(GameObject  targetAvatar)
         {
             if (avatar != null)
@@ -76,8 +87,8 @@ namespace ReadyPlayerMe.Samples.QuickStart
         public void LoadAvatar(string url)
         {
             //remove any leading or trailing spaces
-            avatarUrl = url.Trim(' ');
-            avatarObjectLoader.LoadAvatar(avatarUrl);
+            //avatarUrl = url.Trim(' ');
+            //avatarObjectLoader.LoadAvatar(avatarUrl);
         }
 
     }

@@ -18,15 +18,15 @@ public class GameStateMachine : MonoBehaviour
 
     private void OnDisable()
     {
-        _startbutton.onClick.RemoveListener(GameStart);
-        _restartbutton.onClick.RemoveListener(GameReady);
+        //_startbutton.onClick.RemoveListener(GameStart);
+        //_restartbutton.onClick.RemoveListener(GameReady);
     }
     public void Init()
     {
-        _startbutton.onClick.AddListener(GameStart);
-        _restartbutton.onClick.AddListener(GameReady);
-        _sceneLoader = ServiceLocator.Instance.GetService<SceneLoader>();
-        GameReady();
+        //_startbutton.onClick.AddListener(GameStart);
+        //_restartbutton.onClick.AddListener(GameReady);
+        //_sceneLoader = ServiceLocator.Instance.GetService<SceneLoader>();
+        //GameReady();
     }
     public void GameStart()
     {

@@ -17,6 +17,7 @@ public class AvatarFromPhoto : MonoBehaviour
 
     [SerializeField] private GameObject _avatar;
     [SerializeField] private SpawnPlayer _spawnPlayer;
+    [SerializeField] private AvatarRotator _avatarRotator;
 
 
     [Inject]
@@ -39,10 +40,15 @@ public class AvatarFromPhoto : MonoBehaviour
     {
         _photo = photo;
     }
+    public void SetAvatarToSpawn()
+    {
+        _spawnPlayer.SetPlayer(_avatar);
+    }
     private async void LoadAvatar()
     {
         _avatar = await _avatarHandler.LoadAvatarFromSelfie(_photo);
-        if(_assetProvider != null)
+        _avatarRotator.SetPlayerOnRotation(_avatar);
+        if (_assetProvider != null)
         {
             _assetProvider.SetPlayer(_avatar);
         }
