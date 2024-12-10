@@ -1,10 +1,9 @@
 using ReadyPlayerMe.AvatarCreator;
-using ReadyPlayerMe.Core;
 using ReadyPlayerMe.Samples.AvatarCreatorElements;
 using System;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class AvatarFromPhoto : MonoBehaviour
 {
@@ -12,19 +11,19 @@ public class AvatarFromPhoto : MonoBehaviour
     [SerializeField] private AvatarHandler _avatarHandler;
     [SerializeField] private Button _buttonConfirm;
 
-    private AvatarManager _avatarManager;
+    private AssetProvider _assetProvider;
 
     private Texture2D _photo;
 
     [SerializeField] private GameObject _avatar;
+    [SerializeField] private SpawnPlayer _spawnPlayer;
 
-    private readonly CancellationTokenSource cancellationTokenSource = new();
 
-    private void Awake()
+    [Inject]
+    public void Construct()
     {
+        Debug.Log("ZENJECT");
         PlayerPrefs.DeleteAll();
-        _avatarManager = new AvatarManager(token: cancellationTokenSource.Token);
-
     }
     void OnEnable()
     {
@@ -35,8 +34,6 @@ public class AvatarFromPhoto : MonoBehaviour
     {
         _photoCaptureElement.OnPhotoCaptured.RemoveListener(PhotoShowed);
         _buttonConfirm.onClick.RemoveListener(LoadAvatar);
-        cancellationTokenSource.Cancel();
-        cancellationTokenSource.Dispose();
     }
     private void PhotoShowed(Texture2D photo)
     {
@@ -45,7 +42,14 @@ public class AvatarFromPhoto : MonoBehaviour
     private async void LoadAvatar()
     {
         _avatar = await _avatarHandler.LoadAvatarFromSelfie(_photo);
-        AssetProvider.Instance.SetPlayer(_avatar);
+        if(_assetProvider != null)
+        {
+            _assetProvider.SetPlayer(_avatar);
+        }
+        else
+        {
+            Debug.Log("We cant SetPlayer in assetProvider because it is null");
+        }
     }
     public string Texture2DToBase64(Texture2D texture)
     {

@@ -11,12 +11,12 @@ public class ChangeImage : MonoBehaviour
 
     void Start()
     {
-        _photoCaptureElement.OnPhotoCaptured.AddListener(PhotoShowed);
+        //_photoCaptureElement.OnPhotoCaptured.AddListener(PhotoShowed);
         _button.onClick.AddListener(Hide);
     }
     private void OnDestroy() 
     {
-        _photoCaptureElement.OnPhotoCaptured.RemoveListener(PhotoShowed);
+        //_photoCaptureElement.OnPhotoCaptured.RemoveListener(PhotoShowed);
         _button.onClick.RemoveListener(Hide);
     }
 
@@ -29,7 +29,7 @@ public class ChangeImage : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    private void PhotoShowed(Texture2D image)
+    public void PhotoShowed(Texture2D image)
     {
         if (image == null)
         {
