@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace ReadyPlayerMe.Samples.QuickStart
 {
@@ -6,6 +7,9 @@ namespace ReadyPlayerMe.Samples.QuickStart
     public class ThirdPersonMovement : MonoBehaviour
     {
         private const float TURN_SMOOTH_TIME = 0.05f;
+
+        [SerializeField] private Camera _camera;
+
 
         [SerializeField][Tooltip("Used to determine movement direction based on input and camera forward axis")] 
         private Transform playerCamera;
@@ -41,24 +45,32 @@ namespace ReadyPlayerMe.Samples.QuickStart
             avatar = target;
             if (playerCamera == null)
             {
-                playerCamera = Camera.main.transform;
+                playerCamera = _camera.transform;
             }
         }
 
         public void Move(float inputX, float inputY)
         {
-            var moveDirection = playerCamera.right * inputX + playerCamera.forward * inputY;
+            //var moveDirection = playerCamera.right * inputX + playerCamera.forward * inputY;
+            var moveDirection = playerCamera.right * inputX;
+
             var moveSpeed = isRunning ? runSpeed: walkSpeed;
 
             JumpAndGravity();
             controller.Move(moveDirection.normalized * (moveSpeed * Time.deltaTime) +  new Vector3(0.0f, verticalVelocity * Time.deltaTime, 0.0f));
 
             var moveMagnitude = moveDirection.magnitude;
-            CurrentMoveSpeed = isRunning ? runSpeed * moveMagnitude : walkSpeed * moveMagnitude;
-            
+            //CurrentMoveSpeed = isRunning ? runSpeed * moveMagnitude : walkSpeed * moveMagnitude;
+            isRunning = true;
+            CurrentMoveSpeed = runSpeed;
+
             if (moveMagnitude > 0)
             {
                 RotateAvatarTowardsMoveDirection(moveDirection);
+            }
+            else
+            {
+                RotateAvatarTowardsMoveDirection(Vector3.forward);
             }
         }
 
