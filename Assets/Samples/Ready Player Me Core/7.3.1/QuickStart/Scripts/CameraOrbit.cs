@@ -25,6 +25,7 @@ namespace ReadyPlayerMe.Samples.QuickStart
         private void Start()
         {
             rotation = transform.transform.eulerAngles;
+            playerInput = null;
         }
 
         private void LateUpdate()

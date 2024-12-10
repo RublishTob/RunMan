@@ -19,15 +19,9 @@ public class AvatarFromPhoto : MonoBehaviour
     [SerializeField] private SpawnPlayer _spawnPlayer;
     [SerializeField] private AvatarRotator _avatarRotator;
 
-
-    [Inject]
-    public void Construct()
-    {
-        Debug.Log("ZENJECT");
-        PlayerPrefs.DeleteAll();
-    }
     void OnEnable()
     {
+        PlayerPrefs.DeleteAll();
         _photoCaptureElement.OnPhotoCaptured.AddListener(PhotoShowed);
         _buttonConfirm.onClick.AddListener(LoadAvatar);
     }

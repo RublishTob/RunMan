@@ -1,5 +1,5 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace ReadyPlayerMe.Samples.QuickStart
 {
@@ -9,6 +9,8 @@ namespace ReadyPlayerMe.Samples.QuickStart
         private const float TURN_SMOOTH_TIME = 0.05f;
 
         [SerializeField] private Camera _camera;
+        [SerializeField] private Transform _left;
+        [SerializeField] private Transform _right;
 
 
         [SerializeField][Tooltip("Used to determine movement direction based on input and camera forward axis")] 
@@ -46,6 +48,38 @@ namespace ReadyPlayerMe.Samples.QuickStart
             if (playerCamera == null)
             {
                 playerCamera = _camera.transform;
+            }
+        }
+        public void MoveToPoint(float inputX)
+        {
+            if (inputX == 0)
+            {
+                Move(inputX, 0);
+            }
+            if(inputX < 0)
+            {
+                //transform.position = Vector3.MoveTowards(transform.position, _left.position, walkSpeed * Time.deltaTime);
+                StartCoroutine(MoveToP(_left.position, inputX));
+            }
+            if (inputX > 0)
+            {
+                //transform.position = Vector3.MoveTowards(transform.position, _right.position, walkSpeed * Time.deltaTime);
+                StartCoroutine(MoveToP(_right.position, inputX));
+            }
+        }
+
+        private IEnumerator MoveToP(Vector3 point, float inputX)
+        {
+            while (transform.position.x != point.x)
+            {
+                if (transform.position.x == point.x)
+                {
+                    yield break;
+                }
+                transform.position = Vector3.MoveTowards(transform.position, point, walkSpeed * Time.deltaTime);
+                //Move(inputX, 0);
+                yield return null;
+
             }
         }
 

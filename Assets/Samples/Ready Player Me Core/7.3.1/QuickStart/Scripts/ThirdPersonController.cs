@@ -60,8 +60,19 @@ namespace ReadyPlayerMe.Samples.QuickStart
                 playerInput.CheckInput();
                 var xAxisInput = playerInput.AxisHorizontal;
                 var yAxisInput = playerInput.AxisVertical;
-                thirdPersonMovement.Move(xAxisInput, yAxisInput);
+                thirdPersonMovement.MoveToPoint(xAxisInput);
+                //thirdPersonMovement.Move(xAxisInput, yAxisInput);
                 thirdPersonMovement.SetIsRunning(playerInput.IsHoldingLeftShift);
+
+                if (Input.GetKeyDown(KeyCode.D))
+                {
+                    thirdPersonMovement.MoveToPoint(1f);
+                }
+                if (Input.GetKeyDown(KeyCode.A))
+                {
+                    thirdPersonMovement.MoveToPoint(-1f);
+                }
+
             }
             UpdateAnimator();
         }
