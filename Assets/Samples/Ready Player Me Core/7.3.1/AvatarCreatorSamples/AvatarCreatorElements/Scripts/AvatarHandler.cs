@@ -151,8 +151,8 @@ namespace ReadyPlayerMe.Samples.AvatarCreatorElements
         /// </summary>
         private void SetupAvatar(AvatarProperties newAvatarProperties)
         {
-            avatar.AddComponent<MouseRotationHandler>();
-            avatar.AddComponent<AvatarRotator>();
+            //avatar.AddComponent<MouseRotationHandler>();
+            //avatar.AddComponent<AvatarRotator>();
             var animator = avatar.GetComponent<Animator>();
             AvatarAnimationHelper.SetupAnimator(new AvatarMetadata
                 { BodyType = newAvatarProperties.BodyType, OutfitGender = newAvatarProperties.Gender }, animator);
