@@ -13,7 +13,7 @@ public class TriggerRotatePlatform : MonoBehaviour
         {
             if (coroutine == null)
             {
-                coroutine = StartCoroutine(Rotate(-90f,-30f));
+                coroutine = StartCoroutine(Rotate(-90f, 1f));
             }
         }
     }
