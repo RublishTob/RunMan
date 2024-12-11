@@ -11,6 +11,7 @@ namespace ReadyPlayerMe.Samples.QuickStart
         [SerializeField] private Camera _camera;
         [SerializeField] private Transform _left;
         [SerializeField] private Transform _right;
+        [SerializeField] private Transform _midle;
 
 
         [SerializeField][Tooltip("Used to determine movement direction based on input and camera forward axis")] 
@@ -68,17 +69,44 @@ namespace ReadyPlayerMe.Samples.QuickStart
             }
         }
 
+        public void MoveLeft(float inputX)
+        {
+            StartCoroutine(MoveToP(_left.position, inputX));
+        }
+        public void MoveRight(float inputX)
+        {
+            StartCoroutine(MoveToP(_right.position, inputX));
+        }
+        public void MoveMidle(float inputX)
+        {
+            StartCoroutine(MoveToP(_midle.position, inputX));
+        }
+
+        public void MoveDefault()
+        {
+            isRunning = true;
+            CurrentMoveSpeed = runSpeed;
+        }
+
         private IEnumerator MoveToP(Vector3 point, float inputX)
         {
+            var endOfFrame = new WaitForEndOfFrame();
+            var moveDirection = playerCamera.right * inputX;
+            var moveMagnitude = moveDirection.magnitude;
+
             while (transform.position.x != point.x)
             {
                 if (transform.position.x == point.x)
                 {
                     yield break;
                 }
-                transform.position = Vector3.MoveTowards(transform.position, point, walkSpeed * Time.deltaTime);
+                //transform.position = Vector3.MoveTowards(transform.position, point, walkSpeed * Time.deltaTime);
                 //Move(inputX, 0);
-                yield return null;
+
+                controller.Move(((moveDirection).normalized) / 16);
+                MoveDefault();
+
+                yield return endOfFrame;
 
             }
         }
@@ -91,7 +119,8 @@ namespace ReadyPlayerMe.Samples.QuickStart
             var moveSpeed = isRunning ? runSpeed: walkSpeed;
 
             JumpAndGravity();
-            controller.Move(moveDirection.normalized * (moveSpeed * Time.deltaTime) +  new Vector3(0.0f, verticalVelocity * Time.deltaTime, 0.0f));
+            //controller.Move(moveDirection.normalized * (moveSpeed * Time.deltaTime) +  new Vector3(0.0f, verticalVelocity * Time.deltaTime, 0.0f));
+            controller.Move(moveDirection.normalized * (moveSpeed * Time.deltaTime));
 
             var moveMagnitude = moveDirection.magnitude;
             //CurrentMoveSpeed = isRunning ? runSpeed * moveMagnitude : walkSpeed * moveMagnitude;
@@ -110,7 +139,8 @@ namespace ReadyPlayerMe.Samples.QuickStart
 
         private void RotateAvatarTowardsMoveDirection(Vector3 moveDirection)
         {
-            float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg + transform.rotation.y;
+            //float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg + transform.rotation.y;
+            float targetAngle = moveDirection.x + transform.rotation.y;
             float angle = Mathf.SmoothDampAngle(avatar.transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, TURN_SMOOTH_TIME);
             avatar.transform.rotation = Quaternion.Euler(0, angle, 0);
         }
