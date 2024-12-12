@@ -36,7 +36,11 @@ namespace ReadyPlayerMe.Samples.QuickStart
         private bool isRunning;
 
         private GroundCheck groundCheck;
-        
+
+        private Coroutine moveLeft;
+        private Coroutine moveRight;
+        private Coroutine moveMidle;
+
         private void Awake()
         {
             controller = GetComponent<CharacterController>();
@@ -60,26 +64,52 @@ namespace ReadyPlayerMe.Samples.QuickStart
             if(inputX < 0)
             {
                 //transform.position = Vector3.MoveTowards(transform.position, _left.position, walkSpeed * Time.deltaTime);
-                StartCoroutine(MoveToP(_left.position, inputX));
+                //StartCoroutine(MoveToP(_left.position, inputX));
             }
             if (inputX > 0)
             {
                 //transform.position = Vector3.MoveTowards(transform.position, _right.position, walkSpeed * Time.deltaTime);
-                StartCoroutine(MoveToP(_right.position, inputX));
+                //StartCoroutine(MoveToP(_right.position, inputX));
             }
         }
 
         public void MoveLeft(float inputX)
         {
-            StartCoroutine(MoveToP(_left.position, inputX));
+            moveLeft = StartCoroutine(MoveToP(_left.position, inputX));
         }
         public void MoveRight(float inputX)
         {
-            StartCoroutine(MoveToP(_right.position, inputX));
+            moveRight = StartCoroutine(MoveToP(_right.position, inputX));
         }
         public void MoveMidle(float inputX)
         {
-            StartCoroutine(MoveToP(_midle.position, inputX));
+            moveMidle = StartCoroutine(MoveToP(_midle.position, inputX));
+        }
+
+
+        public void MoveLeftStop()
+        {
+            if (moveLeft == null)
+            {
+                return;
+            }
+            StopCoroutine(moveLeft);
+        }
+        public void MoveRightStop()
+        {
+            if (moveRight == null)
+            {
+                return;
+            }
+            StopCoroutine(moveRight);
+        }
+        public void MoveMidleStop()
+        {
+            if (moveMidle == null)
+            {
+                return;
+            }
+            StopCoroutine(moveMidle);
         }
 
         public void MoveDefault()

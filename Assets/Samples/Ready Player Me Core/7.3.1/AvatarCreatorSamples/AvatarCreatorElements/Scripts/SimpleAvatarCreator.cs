@@ -27,6 +27,7 @@ namespace ReadyPlayerMe.Samples.AvatarCreatorElements
         [SerializeField] private BodyShapeSelectionElement bodyShapeSelectionElement;
         [SerializeField] private GameObject loading;
 
+
         [SerializeField] private GameObject createRPMAccount;
 
         private OutfitGender gender = OutfitGender.Masculine;

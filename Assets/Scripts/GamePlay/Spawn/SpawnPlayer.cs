@@ -5,7 +5,7 @@ public class SpawnPlayer : MonoBehaviour
 {
     private Vector3 spawnPosition => transform.position;
 
-    private GameObject spawnGameObject;
+    [SerializeField] private GameObject spawnGameObject;
 
     [SerializeField] private ThirdPersonLoader _playerLoader;
     public void SetPlayer(GameObject player)
@@ -16,5 +16,9 @@ public class SpawnPlayer : MonoBehaviour
     public void SetupPlayer()
     {
         _playerLoader.SetPlayer(spawnGameObject);
+    }
+    public void StopPlayer()
+    {
+        Destroy(spawnGameObject);
     }
 }

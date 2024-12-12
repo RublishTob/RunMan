@@ -1,3 +1,5 @@
+using ReadyPlayerMe.AvatarCreator;
+using ReadyPlayerMe.Samples.AvatarCreatorElements;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -10,35 +12,76 @@ public class GameStateMachine : MonoBehaviour
     public event Action WinGame;
     public event Action ReadyGame;
 
-    [SerializeField] private Button _startbutton;
-    [SerializeField] private Button _restartbutton;
+    [SerializeField] private Button _confirmPhoto;
+    [SerializeField] private RoadGenerator _roadGenerator;
+    [SerializeField] private PlayerStateMachine _playerStateMachine;
+    [SerializeField] private SpawnPlayer _playerSpawn;
 
-    private SceneLoader _sceneLoader;
+    [SerializeField] private Button _registrateMan;
+    [SerializeField] private AvatarFromPhoto _avatarFromPhoto;
+    [SerializeField] private Button _toGameButton;
+    [SerializeField] private Button _finishGameButton;
+
+    [SerializeField] private GameObject _registrationForm;
+    [SerializeField] private GameObject _photoCaptureForm;
+    [SerializeField] private GameObject _menuForm;
+
+    [SerializeField] private Camera _UICameraToAvatar;
+    [SerializeField] private Camera _UICamera;
+    [SerializeField] private GameObject _GamePlayCamera;
+    [SerializeField] private SimpleAvatarCreator SimpleAvatarCreator;
 
 
-    private void OnDisable()
+    private void Awake()
     {
-        //_startbutton.onClick.RemoveListener(GameStart);
-        //_restartbutton.onClick.RemoveListener(GameReady);
+        SimpleAvatarCreator.OnAvatarLoaded.AddListener(AvatarLoaded);
+        _finishGameButton.onClick.AddListener(GameStart);
     }
-    public void Init()
+
+    private void Update()
     {
-        //_startbutton.onClick.AddListener(GameStart);
-        //_restartbutton.onClick.AddListener(GameReady);
-        //_sceneLoader = ServiceLocator.Instance.GetService<SceneLoader>();
-        //GameReady();
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameStart();
+        }
+    }
+
+    public void AvatarLoaded(AvatarProperties avatar)
+    {
+        GameStart();
     }
     public void GameStart()
     {
-        StartGame?.Invoke();
-    }
-    public void GameReady()
-    {
+        _toGameButton.onClick.AddListener(OnToTheGameButtonClick);
+        _registrateMan.onClick.AddListener(OnClickRegistrationButton);
+        _avatarFromPhoto.OnAvatarLoaded += OnAvatarLoad;
+
+        _UICameraToAvatar.gameObject.SetActive(false);
+        _GamePlayCamera.gameObject.SetActive(false);
+        _UICamera.gameObject.SetActive(true);
+        _roadGenerator.ResetRoads();
+
+        _registrationForm.SetActive(true);
+        _photoCaptureForm.SetActive(false);
+        _menuForm.SetActive(false);
+        _playerStateMachine.Init();
+        _finishGameButton.gameObject.SetActive(false);
+
         ReadyGame?.Invoke();
     }
+
+    public void DisposeResources()
+    {
+        _avatarFromPhoto.OnAvatarLoaded -= OnAvatarLoad;
+        _registrateMan.onClick.RemoveListener(OnClickRegistrationButton);
+        _toGameButton.onClick.RemoveListener(OnToTheGameButtonClick);
+    }
+
+
     public void GameEnd()
     {
         EndGame?.Invoke();
+        DisposeResources();
         StartCoroutine(ShowFailPanelAndRestart());
     }
     public void GameWin()
@@ -56,7 +99,7 @@ public class GameStateMachine : MonoBehaviour
     private IEnumerator GameReadyStart()
     {
         yield return new WaitForSeconds(0.5f);
-        GameReady();
+        GameStart();
 
     }
     private IEnumerator FillWater()
@@ -73,4 +116,31 @@ public class GameStateMachine : MonoBehaviour
         yield return new WaitForSeconds(2f);
     }
 
+
+    public void OnClickRegistrationButton()
+    {
+        _registrationForm.SetActive(false);
+        _photoCaptureForm.SetActive(true);
+        _UICameraToAvatar.gameObject.SetActive(false);
+        _GamePlayCamera.gameObject.SetActive(false);
+    }
+    public void OnAvatarLoad()
+    {
+        _photoCaptureForm.SetActive(false);
+        _registrationForm.SetActive(false);
+        _menuForm.SetActive(true);
+        _UICamera.gameObject.SetActive(false);
+        _UICameraToAvatar.gameObject.SetActive(true);
+        _GamePlayCamera.gameObject.SetActive(false);
+    }
+    public void OnToTheGameButtonClick() 
+    {
+        _avatarFromPhoto.SetAvatarToSpawn();
+        _UICameraToAvatar.gameObject.SetActive(false);
+        _menuForm.SetActive(false);
+        _roadGenerator.StartGenerate();
+        _playerSpawn.SetupPlayer();
+        _GamePlayCamera.gameObject.SetActive(true);
+        _finishGameButton.gameObject.SetActive(true);
+    }
 }

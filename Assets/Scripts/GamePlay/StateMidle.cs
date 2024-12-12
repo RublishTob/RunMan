@@ -16,6 +16,7 @@ public class StateMidle : PlayerState
 
     public override void Exit()
     {
+        _movement.MoveMidleStop();
     }
 
     public override void Start()

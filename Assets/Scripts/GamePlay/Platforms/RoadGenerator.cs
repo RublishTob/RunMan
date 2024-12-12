@@ -16,7 +16,7 @@ public class RoadGenerator : MonoBehaviour
     private float speed = 0;
     public int maxRoadCount = 3;
 
-    private void Start()
+    public void StartGenerate()
     {
         ResetRoads();
         StartRoads();

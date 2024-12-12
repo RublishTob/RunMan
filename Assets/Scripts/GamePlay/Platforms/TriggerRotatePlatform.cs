@@ -31,11 +31,11 @@ public class TriggerRotatePlatform : MonoBehaviour
         {
             return;
         }
-        me.rotation = Quaternion.Lerp(me.rotation, to, Time.deltaTime);
-        if (Quaternion.Angle(me.rotation, to) < 0.01f)
+        me.rotation = Quaternion.LerpUnclamped(me.rotation, to, Time.deltaTime * 2);
+        if (Quaternion.Angle(me.rotation, to) < 0.1f)
         {
-            me.rotation = to;
             doRotation = false;
+            me.rotation = to;
         }
     }
     IEnumerator Rotate(float angle, float intensity)

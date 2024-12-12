@@ -16,6 +16,7 @@ public class StateLeft : PlayerState
 
     public override void Exit()
     {
+        _movement.MoveLeftStop();
     }
 
     public override void Start()

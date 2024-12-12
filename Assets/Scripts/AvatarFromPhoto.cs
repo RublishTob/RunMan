@@ -7,11 +7,11 @@ using Zenject;
 
 public class AvatarFromPhoto : MonoBehaviour
 {
+    public event Action OnAvatarLoaded;
+
     [SerializeField] private PhotoCaptureElement _photoCaptureElement;
     [SerializeField] private AvatarHandler _avatarHandler;
     [SerializeField] private Button _buttonConfirm;
-
-    private AssetProvider _assetProvider;
 
     private Texture2D _photo;
 
@@ -36,20 +36,19 @@ public class AvatarFromPhoto : MonoBehaviour
     }
     public void SetAvatarToSpawn()
     {
+        if(_avatar == null)
+        {
+            Debug.Log("NO AVATAR");
+            return;
+        }
+
         _spawnPlayer.SetPlayer(_avatar);
     }
     private async void LoadAvatar()
     {
         _avatar = await _avatarHandler.LoadAvatarFromSelfie(_photo);
         _avatarRotator.SetPlayerOnRotation(_avatar);
-        if (_assetProvider != null)
-        {
-            _assetProvider.SetPlayer(_avatar);
-        }
-        else
-        {
-            Debug.Log("We cant SetPlayer in assetProvider because it is null");
-        }
+        OnAvatarLoaded?.Invoke();
     }
     public string Texture2DToBase64(Texture2D texture)
     {

@@ -49,12 +49,16 @@ namespace ReadyPlayerMe.Samples.QuickStart
                 Destroy(previewAvatar);
                 previewAvatar = null;
             }
-            SetupAvatar(args.Avatar);
+            //SetupAvatar(args.Avatar);
             OnLoadComplete?.Invoke();
         }
 
         public void SetPlayer(GameObject player)
         {
+            if (player == null)
+            {
+                Debug.Log("NO AVATAR");
+            }
             if (previewAvatar != null)
             {
                 Destroy(previewAvatar);
@@ -68,7 +72,7 @@ namespace ReadyPlayerMe.Samples.QuickStart
         {
             if (avatar != null)
             {
-                Destroy(avatar);
+                //Destroy(avatar);
             }
             
             avatar = targetAvatar;
